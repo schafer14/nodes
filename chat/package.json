@@ -1,0 +1,20 @@
+{
+	"name": "chat",
+	"version": "0.0.1",
+	"description": "Mini multiroom chat server",
+	"dependencies": {
+		"socket.io": "~0.9.6",
+		"mime": "~1.2.7"
+	},
+	"maintainers":[ {
+	   	"name": "Banner B. Schafer",
+	   	"email": "banner.schafer@gmail.com"
+	}],
+	"repositories": [
+       	{
+           	"type": "git", 
+            "url": "https://github.com/schafer14/nodes",
+            "path": "chat"
+       	}
+	]
+}
