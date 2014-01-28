@@ -1,0 +1,19 @@
+{
+	"name": "asynch_demos",
+	"version": "0.0.1",
+	"description": "Code examples utilizing js asynchronise features",
+	"dependencies": {
+		"nimble":"~0.0.2"
+	},
+	"maintainers":[ {
+	   	"name": "Banner B. Schafer",
+	   	"email": "banner.schafer@gmail.com"
+	}],
+	"repositories": [
+       	{
+           	"type": "git", 
+            "url": "https://github.com/schafer14/nodes",
+            "path": "asynch_demos"
+       	}
+	]
+}
