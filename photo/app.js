@@ -39,6 +39,7 @@ if ('development' == app.get('env')) {
 
 app.get('/', photos.list);
 app.get('/upload', photos.form);
+app.get('/photos/:id/download', photos.download(app.get('photos')));
 app.post('/upload', photos.submit(app.get('photos')));
 app.get('/photos/:id/delete', photos.delete);
 app.get('/users', user.list);

@@ -11,7 +11,9 @@
 		<% photos.forEach(function(photo) { %>
 			<div class="photo">
 				<h2><%= photo.name %></h2>
-				<img src="/photos/<%= photo.path%>"> <br />
+				<a href="/photos/<%= photo.id %>/download">
+					<img src="/photos/<%= photo.path%>"> <br />
+				</a>
 				<a href="/photos/<%= photo.id %>/delete">Delete</a>
 			</div>
 		<% }) %>
