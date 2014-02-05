@@ -1,32 +1,51 @@
-var photos = [];
+var Photo = require('../models/Photo');
+var path = require('path');
+var fs = require('fs');
+var join = path.join;
 
-photos.push({
-	name: 'Node.js',
-	path: 'http://nodejs.org/images/logos/nodejs-green.png'
-});
+exports.list = function(req, res) {
+	Photo.find({}, function(err, photos) {
+		if (err) throw err
+		res.render('photos', {
+			title: 'Photos',
+			photos: photos
+		});
+	});
+};
 
-photos.push({
-	name: 'MEAN stack',
-	path: 'http://blog.langoor.mobi/wp-content/uploads/2013/07/meanstack-624x250.jpg'
-});
+exports.form = function(req, res) {
+	res.render('photos/upload', {
+		title: 'Photo upload'
+	});
+};
 
-photos.push({
-	name: 'Express.js',
-	path: 'http://www.perssonponerar.se/wordpress/wp-content/uploads/2013/03/expressjs.jpg'
-});
+exports.submit = function(dir) {
+	return function(req, res, next) {
+		var img = req.files.photo.image;
+		var name = req.body.photo.name || img.name;
+		var path = join(dir, img.name);
 
-photos.push({
-	name: 'NPM',
-	path: 'https://npmjs.org/static/npm.png'
-});
+		fs.rename(img.path, path, function(err) {
+			if (err) throw err
 
-photos.push({
-	name: 'Node logo',
-	path: 'http://readwrite.com/files/nodejs.png'
-});
+			Photo.create({
+				name: name,
+				path: img.name
+			}, function(err) {
+				if (err) throw err
+				res.redirect('/');
+			});
+		});
+	};
+};
 
-exports.list = function(req, res, next) {
-	res.render('photos', {
-		photos: photos
+exports.delete = function(req, res) {
+	var id = req.params.id;
+	Photo.findById(id, function(err, photo) {
+		if (err) throw err
+		photo.remove(function(err) {
+			if (err) throw err
+			res.redirect('/');
+		});
 	});
 };

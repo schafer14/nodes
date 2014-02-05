@@ -18,6 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.favicon());
 app.use(express.logger('dev'));
+app.use(express.bodyParser());
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
@@ -37,6 +38,9 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', photos.list);
+app.get('/upload', photos.form);
+app.post('/upload', photos.submit(app.get('photos')));
+app.get('/photos/:id/delete', photos.delete);
 app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
