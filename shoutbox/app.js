@@ -16,6 +16,7 @@ var entries = require('./routes/entries');
 var validate = require('./lib/middleware/validate.js');
 var page = require('./lib/middleware/page');
 var Entry = require('./lib/entry');
+var auth = require('./lib/middleware/auth.js')
 
 var app = express();
 
@@ -48,8 +49,9 @@ app.post('/register', register.submit);
 app.get('/login', login.form);
 app.post('/login', login.submit);
 app.get('/logout', login.logout);
-app.get('/post', entries.form);
+app.get('/post', auth(), entries.form);
 app.post('/post', 
+	auth(),
 	validate.required('entry[title]'), 
 	validate.lengthAbove('entry[body]', 4),
 	entries.submit);
