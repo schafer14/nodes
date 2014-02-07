@@ -12,6 +12,10 @@ var register = require('./routes/register');
 var messages = require('./lib/messages');
 var login = require('./routes/login');
 var user = require('./lib/middleware/user');
+var entries = require('./routes/entries');
+var validate = require('./lib/middleware/validate.js');
+var page = require('./lib/middleware/page');
+var Entry = require('./lib/entry');
 
 var app = express();
 
@@ -38,12 +42,17 @@ if ('development' == app.get('env')) {
 
 app.set('title', 'ShoutBoxin');
 
-app.get('/', routes.index);
+app.get('/', page(Entry.count, 5), entries.list);
 app.get('/register', register.form);
 app.post('/register', register.submit);
 app.get('/login', login.form);
 app.post('/login', login.submit);
 app.get('/logout', login.logout);
+app.get('/post', entries.form);
+app.post('/post', 
+	validate.required('entry[title]'), 
+	validate.lengthAbove('entry[body]', 4),
+	entries.submit);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

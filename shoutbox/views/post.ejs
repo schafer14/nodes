@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%= settings.title %></title>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+</head>
+<body>
+ 	<% include menu %>
+ 	<h1><% title %></h1>
+ 	<p>Create a new post</p>
+
+ 	<% include messages %>
+
+ 	<form action="/post" method="post">
+ 		<p>
+ 			<input name="entry[title]" type="text" placeholder="Title" />
+ 		</p>
+ 		<p>
+ 			<textarea type="textarea" name="entry[body]" placeholder="Body"> </textarea>
+ 		</p>
+ 		<p>
+ 			<input type="submit" value="Post" />
+ 		</p>
+ 	</form>
+</body>
+</html>
