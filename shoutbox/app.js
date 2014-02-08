@@ -18,6 +18,7 @@ var page = require('./lib/middleware/page');
 var Entry = require('./lib/entry');
 var auth = require('./lib/middleware/auth');
 var api = require('./routes/api');
+var index = require('./routes/index');
 
 var app = express();
 
@@ -37,11 +38,14 @@ app.use('/api', api.auth);
 app.use(user);
 app.use(messages);
 app.use(app.router);
+app.use(index.notfound);
+app.use(index.error);
 
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
+
 
 app.set('title', 'ShoutBoxin');
 
@@ -59,8 +63,16 @@ app.post('/post',
 	entries.submit);
 
 app.get('/api/user/:id', api.user);
-// app.get('/api/entries/', page(Entry.count, 5), api.entries);
-// app.post('/api/entry', api.add);
+app.get('/api/entries', page(Entry.count, 5), api.entries);
+app.post('/api/entries', entries.submit);
+
+if(process.env.ERROR_ROUTE) {
+	app.get('/dev/error', function(req, res, next) {
+		var err = new Error('database connection failed');
+		next(err);
+	});
+}
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
